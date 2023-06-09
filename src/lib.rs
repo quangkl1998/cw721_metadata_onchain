@@ -47,7 +47,20 @@ pub mod entry {
         info: MessageInfo,
         msg: InstantiateMsg,
     ) -> StdResult<Response> {
-        Cw721MetadataContract::default().instantiate(deps, env, info, msg)
+        Cw721MetadataContract::default().instantiate(deps, env, info, msg);
+        let token_id = "Enterprise";
+        let mint_msg = MintMsg {
+            token_id: token_id.to_string(),
+            owner: "john".to_string(),
+            token_uri: Some("https://starships.example.com/Starship/Enterprise.json".into()),
+            extension: Some(Metadata {
+                description: Some("Spaceship with Warp Drive".into()),
+                name: Some("Starship USS Enterprise".to_string()),
+                ..Metadata::default()
+            }),
+        };
+      ExecuteMsg::Mint(mint_msg.clone());
+        Ok(Response::default())
     }
 
     #[entry_point]
